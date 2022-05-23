@@ -203,10 +203,56 @@ class EntryItem extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 5),
                           child: GestureDetector(
                             onTap: () {
-                              Fluttertoast.showToast(
-                                msg: "Template Deleted.", // message
-                                toastLength: Toast.LENGTH_SHORT, // length
-                                gravity: ToastGravity.BOTTOM, // location
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    elevation: 16,
+                                    child: Container(
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: ListView(
+                                        shrinkWrap: true,
+                                        children: <Widget>[
+                                          SizedBox(height: 25),
+                                          Center(
+                                            child: Text('Alert',
+                                                style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        Colors.grey.shade700)),
+                                          ),
+                                          SizedBox(height: 15),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Fluttertoast.showToast(
+                                                msg:
+                                                    "Template Deleted.", // message
+                                                toastLength: Toast
+                                                    .LENGTH_SHORT, // length
+                                                gravity: ToastGravity
+                                                    .BOTTOM, // location
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            child: _buildRow(
+                                                'Delete', Colors.red.shade800),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: _buildRow(
+                                                'Cancel', Colors.grey.shade800),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
                             child: Image.asset(
@@ -330,5 +376,22 @@ class EntryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _buildTiles(entry);
+  }
+
+  Widget _buildRow(String name, Color shade800) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      child: Column(
+        children: <Widget>[
+          Container(height: 1, color: Colors.grey.shade300),
+          SizedBox(height: 14),
+          Text(name,
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: shade800)),
+        ],
+      ),
+    );
   }
 }

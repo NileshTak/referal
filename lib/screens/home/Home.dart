@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:referal/controller/button_click.dart';
 import 'package:referal/screens/home/child/selectTemplate.dart';
@@ -124,6 +125,53 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 height: 400,
                 child: SfCalendar(
+                  onTap: (data) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          elevation: 16,
+                          child: Container(
+                            height: 350,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 14),
+                                Text('Session Details',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800)),
+                                SizedBox(height: 14),
+                                Container(
+                                  height: 250,
+                                  child: _showSessionDetails(
+                                      'Moonpreneur Classroom Session [App. Dev.]',
+                                      'Moonshot Junior is inviting you to a scheduled Zoom meeting.',
+                                      'https://us02web.zoom.us/j/84058190926?pwd=TWdmQzZ6S2YvUmNyKytKSnQ4ckdjdz09',
+                                      Colors.grey.shade600),
+                                ),
+                                Container(
+                                    height: 1, color: Colors.grey.shade300),
+                                SizedBox(height: 14),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade800)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   view: CalendarView.month,
                   dataSource: MeetingDataSource(_getDataSource()),
                   // by default the month appointment display mode set as Indicator, we can
@@ -274,6 +322,53 @@ class _MyHomePageState extends State<MyHomePage> {
     meetings.add(Meeting(
         'Conference', startTimef, endTime, const Color(0xFFFF0000), false));
     return meetings;
+  }
+
+  Widget _showSessionDetails(
+      String title, String summary, String link, Color shade800) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 14),
+            Column(
+              children: [
+                Text(title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800)),
+                SizedBox(height: 10),
+                Container(height: 1, color: Colors.grey.shade300),
+                SizedBox(height: 10),
+                Text('Summary : ' + summary,
+                    style:
+                        TextStyle(fontSize: 16.0, color: Colors.grey.shade800)),
+                SizedBox(height: 10),
+                Container(height: 1, color: Colors.grey.shade300),
+                SizedBox(height: 10),
+                Text('Join Zoom Meeting : ',
+                    style:
+                        TextStyle(fontSize: 16.0, color: Colors.grey.shade800)),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {},
+                  child: Text(link,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
