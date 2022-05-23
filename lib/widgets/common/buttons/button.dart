@@ -35,7 +35,6 @@ class Button extends StatelessWidget {
         onPressed: onPressed,
         disabledColor: Colors.grey,
         elevation: 0,
-        padding: EdgeInsets.all(10),
         height: 54,
         color: !outline && !swipeColor ? color : white,
         shape: RoundedRectangleBorder(

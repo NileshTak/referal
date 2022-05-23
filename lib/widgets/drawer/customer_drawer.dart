@@ -26,20 +26,26 @@ class CustomDrawer extends StatelessWidget {
   ListTile getListTile({String icon, String title, Function() onPress}) {
     return ListTile(
       onTap: onPress,
-      contentPadding: EdgeInsets.symmetric(horizontal: 26, vertical: 8),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16,
-          color: Colors.grey.shade600,
-          fontWeight: FontWeight.w900,
+      contentPadding: EdgeInsets.symmetric(horizontal: 26, vertical: 0),
+      title: Transform.translate(
+        offset: Offset(-16, 0),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey.shade600,
+            fontWeight: FontWeight.w900,
+          ),
         ),
       ),
-      leading: Image.asset(
-        icon,
-        width: 25,
-        height: 25,
-        color: const Color(0xFF000000),
+      leading: Transform.translate(
+        offset: Offset(0, 2),
+        child: Image.asset(
+          icon,
+          width: 18,
+          height: 18,
+          color: const Color(0xFF000000),
+        ),
       ),
       trailing: Icon(
         MdiIcons.chevronRight,
@@ -140,6 +146,10 @@ class CustomDrawer extends StatelessWidget {
               }),
           getListTile(
               icon: 'assets/clo.png', title: 'Rate our app', onPress: () {}),
+          getListTile(
+            icon: 'assets/LO.png',
+            title: 'Setting',
+          ),
           getListTile(
             icon: 'assets/LO.png',
             title: 'LogOut',

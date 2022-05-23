@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:referal/controller/button_click.dart';
+import 'package:referal/screens/home/child/selectTemplate.dart';
 import 'package:referal/screens/home/widget/social_media_icons.dart';
 import 'package:referal/screens/notifications/notifications.dart';
 import 'package:referal/screens/profile/profile.dart';
@@ -121,9 +122,9 @@ class _MyHomePageState extends State<MyHomePage> {
           body: Column(
             children: [
               Container(
-                height: 300,
+                height: 400,
                 child: SfCalendar(
-                  view: CalendarView.week,
+                  view: CalendarView.month,
                   dataSource: MeetingDataSource(_getDataSource()),
                   // by default the month appointment display mode set as Indicator, we can
                   // change the display mode as appointment using the appointment display
@@ -132,6 +133,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       appointmentDisplayMode:
                           MonthAppointmentDisplayMode.appointment),
                 ),
+              ),
+              Divider(
+                thickness: 0.6,
+                color: Colors.black.withOpacity(0.3),
               ),
               Container(
                 child: Column(
@@ -146,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey,
+                            color: Colors.grey.shade800,
                           ),
                         ),
                       ),
@@ -231,8 +236,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         Container(
                           height: 80,
                           child: Button(
-                            title: 'Search',
-                            onPressed: () {},
+                            title: 'Select',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => selectTemplate()));
+                            },
                           ),
                         )
                       ],
@@ -254,9 +264,15 @@ class _MyHomePageState extends State<MyHomePage> {
     final DateTime today = DateTime.now();
     final DateTime startTime =
         DateTime(today.year, today.month, today.day, 9, 0, 0);
+    final DateTime startTimef =
+        DateTime(today.year, today.month, today.day + 1, 11, 0, 0);
     final DateTime endTime = startTime.add(const Duration(hours: 2));
     meetings.add(Meeting(
         'Conference', startTime, endTime, const Color(0xFF0F8644), false));
+    meetings.add(
+        Meeting('Conference', startTime, endTime, darkPrimaryColor, false));
+    meetings.add(Meeting(
+        'Conference', startTimef, endTime, const Color(0xFFFF0000), false));
     return meetings;
   }
 }

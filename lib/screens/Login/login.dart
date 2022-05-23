@@ -120,6 +120,7 @@ class _TemplateState extends State<Login> {
                     Container(
                       margin: EdgeInsets.fromLTRB(20, 10, 16, 16),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
                             onTap: () {
