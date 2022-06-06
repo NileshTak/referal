@@ -35,6 +35,9 @@ dependencies:
   flutter_quill: ^4.1.9
   html_editor_enhanced: ^2.4.0+1
   fluttertoast: ^8.0.9
+  shared_preferences: ^2.0.15
+  flutter_bloc: ^8.0.1
+  get_it: ^7.2.0
   
 
 dev_dependencies:

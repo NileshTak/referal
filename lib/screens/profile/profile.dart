@@ -67,7 +67,7 @@ class _MyHomePageState extends State<Profile> {
                   ),
                 );
               },
-              child: Image.asset('assets/bel.png', width: 25.0, height: 25.0),
+              child: Image.asset('assets/bell.png', width: 25.0, height: 25.0),
             )),
       ],
     );

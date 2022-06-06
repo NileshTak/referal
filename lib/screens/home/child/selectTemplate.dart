@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:referal/controller/calendar_view_changer.dart';
 import 'package:referal/screens/notifications/notifications.dart';
 import 'package:referal/screens/profile/profile.dart';
 import 'package:referal/screens/template/EditTemplate.dart';
@@ -45,7 +47,7 @@ class _TemplateState extends State<selectTemplate> {
                   ),
                 );
               },
-              child: Image.asset('assets/bel.png', width: 25.0, height: 25.0),
+              child: Image.asset('assets/bell.png', width: 25.0, height: 25.0),
             )),
         Padding(
             padding: EdgeInsets.only(right: 25.0),
@@ -141,34 +143,20 @@ class MyCardWidget extends StatelessWidget {
 }
 
 class Entry {
-  Entry(this.title, [this.children = const <Entry>[]]);
+  Entry(this.img, this.title, this.para);
 
+  final String img;
   final String title;
-  final List<Entry> children;
+  final String para;
 }
 
 final List<Entry> data = <Entry>[
-  Entry(
-    'assets/fb.png',
-    <Entry>[
-      Entry(
-          'Expandable should not be confused with ExpansionPanel. ExpansionPanel, which is a part of Flutter material library, is designed to work only within ExpansionPanelList and cannot be used for making other widgets, for example, expandable Card widgets.'),
-    ],
-  ),
-  Entry(
-    'assets/insta.png',
-    <Entry>[
-      Entry(
-          'Expandable should not be confused with ExpansionPanel. ExpansionPanel, which is a part of Flutter material library, is designed to work only within ExpansionPanelList and cannot be used for making other widgets, for example, expandable Card widgets.'),
-    ],
-  ),
-  Entry(
-    'assets/wp.png',
-    <Entry>[
-      Entry(
-          'Expandable should not be confused with ExpansionPanel. ExpansionPanel, which is a part of Flutter material library, is designed to work only within ExpansionPanelList and cannot be used for making other widgets, for example, expandable Card widgets.'),
-    ],
-  ),
+  Entry('assets/fb.png', 'Template Heading 1',
+      'A paragraph is a series of related sentences developing a central idea, called the topic.'),
+  Entry('assets/insta.png', 'Template Heading 2',
+      'A paragraph is a series of related sentences developing a central idea, called the topic.'),
+  Entry('assets/wp.png', 'Template Heading 3',
+      'A paragraph is a series of related sentences developing a central idea, called the topic.'),
 ];
 
 class EntryItem extends StatelessWidget {
@@ -286,7 +274,7 @@ class EntryItem extends StatelessWidget {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        child: Image.asset(root.title, width: 40, height: 40),
+                        child: Image.asset(root.img, width: 40, height: 40),
                         margin: EdgeInsets.all(10),
                       ),
                     ),
@@ -297,7 +285,7 @@ class EntryItem extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 160,
-                            child: Text('Template Heading 1',
+                            child: Text(root.title,
                                 style: TextStyle(
                                     fontSize: 14.0,
                                     fontWeight: FontWeight.bold,
@@ -305,8 +293,7 @@ class EntryItem extends StatelessWidget {
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 160,
-                            child: Text(
-                                'A paragraph is a series of related sentences developing a central idea, called the topic.',
+                            child: Text(root.para,
                                 style: TextStyle(
                                     fontSize: 12.0,
                                     color: Colors.grey.shade600)),
@@ -330,7 +317,11 @@ class EntryItem extends StatelessWidget {
                         title: 'Publish',
                         radius: 50,
                         textsize: 11,
-                        onPressed: () {},
+                        onPressed: () {
+                          Provider.of<MessageData>(context, listen: false)
+                              .setnewMessage(root.title);
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                     Container(

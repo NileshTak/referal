@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:referal/controller/button_click.dart';
+import 'package:referal/controller/calendar_view_changer.dart';
 import 'package:referal/screens/home/child/selectTemplate.dart';
 import 'package:referal/screens/home/widget/social_media_icons.dart';
+import 'package:referal/screens/notifications/notificationc.dart';
 import 'package:referal/screens/notifications/notifications.dart';
 import 'package:referal/screens/profile/profile.dart';
 import 'package:referal/style/colors.dart';
@@ -28,6 +32,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   String initialValue = 'Select message to share';
 
+  CalendarView initialCalenderValue = CalendarView.month;
+
   bool socialMediaVisible = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -41,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
     'Template Heading 5',
     'Template Heading 6'
   ];
+
+  var itemCalList = [CalendarView.month, CalendarView.day];
 
   Future<bool> onWillPop() async {
     // if (_currentIndex == 0) {
@@ -77,11 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Notifications(),
+                    builder: (context) => NotificationC(),
                   ),
                 );
               },
-              child: Image.asset('assets/bel.png', width: 25.0, height: 25.0),
+              child: Image.asset('assets/bell.png', width: 25.0, height: 25.0),
             )),
         Padding(
             padding: EdgeInsets.only(right: 25.0),
@@ -107,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var calenderView = CalendarView.month;
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
@@ -122,65 +131,123 @@ class _MyHomePageState extends State<MyHomePage> {
           appBar: _getAppBar(),
           body: Column(
             children: [
-              Container(
-                height: 400,
-                child: SfCalendar(
-                  onTap: (data) {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Dialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          elevation: 16,
-                          child: Container(
-                            height: 350,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 14),
-                                Text('Session Details',
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey.shade800)),
-                                SizedBox(height: 14),
-                                Container(
-                                  height: 250,
-                                  child: _showSessionDetails(
-                                      'Moonpreneur Classroom Session [App. Dev.]',
-                                      'Moonshot Junior is inviting you to a scheduled Zoom meeting.',
-                                      'https://us02web.zoom.us/j/84058190926?pwd=TWdmQzZ6S2YvUmNyKytKSnQ4ckdjdz09',
-                                      Colors.grey.shade600),
+              Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 18),
+                    height: 400,
+                    child: SfCalendar(
+                      onTap: (data) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              elevation: 16,
+                              child: Container(
+                                height: 350,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 14),
+                                    Text('Session Details',
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey.shade800)),
+                                    SizedBox(height: 14),
+                                    Container(
+                                      height: 250,
+                                      child: _showSessionDetails(
+                                          'Moonpreneur Classroom Session [App. Dev.]',
+                                          'Moonshot Junior is inviting you to a scheduled Zoom meeting.',
+                                          'https://us02web.zoom.us/j/84058190926?pwd=TWdmQzZ6S2YvUmNyKytKSnQ4ckdjdz09',
+                                          Colors.grey.shade600),
+                                    ),
+                                    Container(
+                                        height: 1, color: Colors.grey.shade300),
+                                    SizedBox(height: 14),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Cancel',
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey.shade800)),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                    height: 1, color: Colors.grey.shade300),
-                                SizedBox(height: 14),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Cancel',
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey.shade800)),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  view: CalendarView.month,
-                  dataSource: MeetingDataSource(_getDataSource()),
-                  // by default the month appointment display mode set as Indicator, we can
-                  // change the display mode as appointment using the appointment display
-                  // mode property
-                  monthViewSettings: const MonthViewSettings(
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.appointment),
-                ),
+
+                      // view: initialCalenderValue == "Monthly"
+                      //     ? CalendarView.month
+                      //     : CalendarView.day,
+
+                      view: CalendarView.month,
+                      dataSource: MeetingDataSource(_getDataSource()),
+                      // by default the month appointment display mode set as Indicator, we can
+                      // change the display mode as appointment using the appointment display
+                      // mode property
+                      onViewChanged: (viewChangedDetails) {
+                        print(viewChangedDetails.visibleDates);
+                      },
+                      monthViewSettings: const MonthViewSettings(
+                          appointmentDisplayMode:
+                              MonthAppointmentDisplayMode.appointment),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      width: 110,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.grey.shade200,
+                      ),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: DropdownButton<CalendarView>(
+                        isExpanded: true,
+                        iconEnabledColor: Colors.grey.shade600,
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 14),
+                        dropdownColor: Colors.white,
+                        focusColor: Colors.black,
+                        value: initialCalenderValue,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        items: itemCalList.map((CalendarView items) {
+                          return DropdownMenuItem(
+                              value: items,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  (items == CalendarView.month
+                                      ? "Monthly"
+                                      : "Daily"),
+                                  style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                        }).toList(),
+                        onChanged: (CalendarView newValue) {
+                          setState(() {
+                            initialCalenderValue = newValue;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Divider(
                 thickness: 0.6,
@@ -231,54 +298,95 @@ class _MyHomePageState extends State<MyHomePage> {
                         //   ),
                         // ),
 
-                        Container(
-                          width: 250,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.grey.shade200,
-                          ),
-                          margin: EdgeInsets.symmetric(horizontal: 20),
-                          child: DropdownButton(
-                            isExpanded: true,
-                            iconEnabledColor: Colors.grey.shade600,
-                            style: TextStyle(
-                                color: Colors.grey.shade600, fontSize: 16),
-                            dropdownColor: Colors.white,
-                            focusColor: Colors.black,
-                            value: initialValue,
-                            icon: Icon(Icons.keyboard_arrow_down),
-                            items: itemList.map((String items) {
-                              return DropdownMenuItem(
-                                  value: items,
-                                  child: items == 'Select message to share'
-                                      ? Container(
-                                          margin: EdgeInsets.only(left: 20),
-                                          child: Text(
-                                            items,
-                                          ),
-                                        )
-                                      : Container(
-                                          margin: EdgeInsets.only(left: 20),
-                                          child: Text(
-                                            items,
-                                            style: TextStyle(
-                                                color: Colors.grey.shade700,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ));
-                            }).toList(),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                initialValue = newValue;
-                                if (newValue == 'Select message to share') {
-                                  socialMediaVisible = false;
-                                } else {
-                                  socialMediaVisible = true;
-                                }
-                              });
-                            },
-                          ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => selectTemplate()));
+                          },
+                          child: Container(
+                              width: 250,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade200),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                color: Colors.grey.shade200,
+                              ),
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    Consumer<MessageData>(
+                                      builder: (context, value, child) => Text(
+                                        value.message,
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.keyboard_arrow_down),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+
+                              // DropdownButton(
+                              //   onTap: () {
+                              //     Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //             builder: (context) => selectTemplate()));
+                              //   },
+                              //   isExpanded: true,
+                              //   iconEnabledColor: Colors.grey.shade600,
+                              //   style: TextStyle(
+                              //       color: Colors.grey.shade600, fontSize: 16),
+                              //   dropdownColor: Colors.white,
+                              //   focusColor: Colors.black,
+                              //   value: initialValue,
+                              //   icon: Icon(Icons.keyboard_arrow_down),
+                              //   items: itemList.map((String items) {
+                              //     return DropdownMenuItem(
+                              //         value: items,
+                              //         child: items == 'Select message to share'
+                              //             ? Container(
+                              //                 margin: EdgeInsets.only(left: 20),
+                              //                 child: Text(
+                              //                   items,
+                              //                 ),
+                              //               )
+                              //             : Container(
+                              //                 margin: EdgeInsets.only(left: 20),
+                              //                 child: Text(
+                              //                   items,
+                              //                   style: TextStyle(
+                              //                       color: Colors.grey.shade700,
+                              //                       fontWeight: FontWeight.w700),
+                              //                 ),
+                              //               ));
+                              //   }).toList(),
+                              //   onChanged: (String newValue) {
+                              //     setState(() {
+                              //       initialValue = newValue;
+                              //       if (newValue == 'Select message to share') {
+                              //         socialMediaVisible = false;
+                              //       } else {
+                              //         socialMediaVisible = true;
+                              //       }
+                              //     });
+                              //   },
+                              // ),
+
+                              ),
                         ),
 
                         Container(

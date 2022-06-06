@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:referal/controller/calendar_view_changer.dart';
 import 'package:referal/screens/notifications/notifications.dart';
 import 'package:referal/screens/profile/profile.dart';
 import 'package:referal/screens/template/EditTemplate.dart';
@@ -33,7 +35,7 @@ class _TemplateState extends State<Template> {
                   ),
                 );
               },
-              child: Image.asset('assets/bel.png', width: 25.0, height: 25.0),
+              child: Image.asset('assets/bell.png', width: 25.0, height: 25.0),
             )),
         Padding(
             padding: EdgeInsets.only(right: 25.0),
@@ -86,8 +88,18 @@ class _TemplateState extends State<Template> {
 }
 
 /// This is the stateless widget that the main application instantiates.
-class MyCardWidget extends StatelessWidget {
+class MyCardWidget extends StatefulWidget {
   MyCardWidget({Key key}) : super(key: key);
+
+  @override
+  _MyCardWidgetState createState() => _MyCardWidgetState();
+}
+
+class _MyCardWidgetState extends State<MyCardWidget> {
+  List<String> messagedata = [
+    "Template Hewading1",
+    "template head 2",
+  ];
 
   @override
   Widget build(BuildContext context) {

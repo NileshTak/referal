@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:referal/screens/Schedule/Schedule.dart';
+import 'package:referal/screens/Settings/settings.dart';
 import 'package:referal/screens/home/Home.dart';
 import 'package:referal/screens/myreferals/myreferals.dart';
 import 'package:referal/screens/notifications/notifications.dart';
@@ -70,6 +72,14 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MyHomePage()));
+              }),
+          getListTile(
+              icon: 'assets/Schedule.png',
+              title: 'Schedule',
+              onPress: () {
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => schedule()));
               }),
           getListTile(
               icon: 'assets/ME.png',
@@ -145,11 +155,19 @@ class CustomDrawer extends StatelessWidget {
                 );
               }),
           getListTile(
-              icon: 'assets/clo.png', title: 'Rate our app', onPress: () {}),
+              icon: 'assets/Rate.png', title: 'Rate our app', onPress: () {}),
           getListTile(
-            icon: 'assets/LO.png',
-            title: 'Setting',
-          ),
+              icon: 'assets/Setting.png',
+              title: 'Setting',
+              onPress: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Settings(),
+                  ),
+                );
+              }),
           getListTile(
             icon: 'assets/LO.png',
             title: 'LogOut',
