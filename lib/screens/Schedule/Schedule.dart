@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:html_editor_enhanced/utils/shims/dart_ui_real.dart';
 import 'package:provider/provider.dart';
 import 'package:referal/controller/button_click.dart';
 import 'package:referal/screens/home/child/selectTemplate.dart';
@@ -203,7 +204,7 @@ class _MyHomePageState extends State<schedule> {
 
   _buildtabItem(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.14,
+      height: MediaQuery.of(context).size.height * 0.10,
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -223,20 +224,23 @@ class _MyHomePageState extends State<schedule> {
         children: [
           Row(
             children: [
-              const CircleAvatar(
-                backgroundColor: Colors.red,
-                child: Text("HS"),
+              CircleAvatar(
+                backgroundColor: Colors.blue.shade800,
+                child: Text(
+                  "App",
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Himanshu Singh",
-                      style:
-                          TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                    ),
+                    Text('Moonpreneur Classroom Session \n [App. Dev.]',
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade600)),
                     const SizedBox(height: 4),
                     Row(
                       children: const [
@@ -246,7 +250,7 @@ class _MyHomePageState extends State<schedule> {
                         ),
                         SizedBox(width: 4),
                         Text(
-                          "12/12/2020",
+                          "Thursday, June 9",
                           style: TextStyle(
                               fontSize: 10, fontStyle: FontStyle.italic),
                         ),
@@ -257,7 +261,7 @@ class _MyHomePageState extends State<schedule> {
                         ),
                         SizedBox(width: 4),
                         Text(
-                          "12:00 PM",
+                          "7:30 – 8:30am",
                           style: TextStyle(
                               fontSize: 10, fontStyle: FontStyle.italic),
                         ),
@@ -266,35 +270,72 @@ class _MyHomePageState extends State<schedule> {
                   ],
                 ),
               ),
-              MaterialButton(
-                color: darkPrimaryColor,
-                onPressed: () {},
-                height: 25,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
-                      Icons.notifications,
-                      size: 15,
+              Container(
+                width: 70,
+                child: MaterialButton(
+                  color: Colors.blue.shade800,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          elevation: 16,
+                          child: Container(
+                            height: 350,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 14),
+                                Text('Session Details',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800)),
+                                SizedBox(height: 14),
+                                Container(
+                                  height: 250,
+                                  child: _showSessionDetails(
+                                      'Moonpreneur Classroom Session [App. Dev.]',
+                                      'Moonshot Junior is inviting you to a scheduled Zoom meeting.',
+                                      'https://us02web.zoom.us/j/84058190926?pwd=TWdmQzZ6S2YvUmNyKytKSnQ4ckdjdz09',
+                                      Colors.grey.shade600),
+                                ),
+                                Container(
+                                    height: 1, color: Colors.grey.shade300),
+                                SizedBox(height: 14),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Cancel',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade800)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  height: 30,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    "Join",
+                    style: TextStyle(
+                      fontSize: 13,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 3),
-                    Text(
-                      "Reminder",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
         ],
       ),
     );
